@@ -1,7 +1,10 @@
 
 
 FROM jenkins:2.60.1
-MAINTAINER Wessel Pierse
+MAINTAINER Wessel Pieterse
+
+ARG user=jenkins
+
 # if we want to install via apt
 USER root
 RUN apt-get update && apt-get install -y docker
