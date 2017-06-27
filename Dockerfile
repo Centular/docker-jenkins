@@ -1,6 +1,13 @@
 FROM openjdk:8-jdk
 
-RUN apt-get update && apt-get install -y git curl docker && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
+
+ENV DOCKER_VERSION 1.9.1
+
+# Install Docker binary
+RUN wget -nv https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION -O /usr/bin/docker && \
+  chmod +x /usr/bin/docker
+
 
 ARG user=jenkins
 ARG group=jenkins
