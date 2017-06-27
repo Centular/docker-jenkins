@@ -10,13 +10,12 @@ RUN wget -nv https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION -
 
 
 ARG user=jenkins
-ARG group=jenkins
+ARG group=docker
 ARG uid=1000
-ARG gid=1000
+#set this to match the docker id on the host
+ARG gid=1001
 ARG http_port=8080
 ARG agent_port=50000
-#set this to match the docker id on the host
-ARG dockerGid=1001
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
@@ -25,9 +24,7 @@ ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 # If you bind mount a volume from the host or a data container, 
 # ensure you use the same uid
 RUN groupadd -g ${gid} ${group} \
-    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user} \
-    && groupadd -g ${dockerGid} docker \
-    && usermod -aG docker ${user} 
+    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user} 
 
 # Jenkins home directory is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
