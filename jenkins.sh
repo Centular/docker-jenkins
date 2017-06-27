@@ -1,4 +1,3 @@
-
 #! /bin/bash -e
 
 : "${JENKINS_HOME:="/var/jenkins_home"}"
