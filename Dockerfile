@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 ENV DOCKER_VERSION 1.12.6
 
 # Install Docker binary
-RUN curl https://get.docker.com/builds/Linux/x86_64/docker-${v}.tgz -o docker-${v}.tgz \
+RUN curl https://get.docker.com/builds/Linux/x86_64/docker-${v}.tgz -o docker-${DOCKER_VERSION}.tgz \
              && tar xzf docker-${v}.tgz -C /usr/local/bin/ \
              && chmod +x /usr/bin/docker
 
