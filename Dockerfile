@@ -3,11 +3,11 @@ FROM openjdk:8-jdk
 RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
 #Needs to match the host version
-ENV DOCKER_VERSION 1.12.6
+ARG DOCKER_VERSION 1.12.6
 
 # Install Docker binary
-RUN curl https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz -o docker-$DOCKER_VERSION.tgz \
-             && tar xzf docker-$DOCKER_VERSION.tgz -C /usr/local/bin/ \
+RUN curl https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz -o docker-${DOCKER_VERSION}.tgz \
+             && tar xzf docker-${DOCKER_VERSION}.tgz -C /usr/local/bin/ \
              && chmod +x /usr/bin/docker
 
 ARG user=jenkins
