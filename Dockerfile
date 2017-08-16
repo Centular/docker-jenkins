@@ -96,7 +96,7 @@ RUN curl -fsSL ${JENKINS_URL} -o /usr/share/jenkins/jenkins.war \
 ENV JENKINS_UC https://updates.jenkins.io
 RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
 #allows jenkins user to run node updates
-RUN chown -R $(user) $(npm config get prefix)/{lib/node_modules,bin,share
+RUN chown -R $(user) /usr/lib/{node_modules,bin,share}
 
 # for main web interface:
 EXPOSE ${http_port}
