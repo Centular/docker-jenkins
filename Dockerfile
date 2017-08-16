@@ -41,7 +41,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     apt-get clean && \
     npm install -g gulp bower polymer-cli generator-polymer-init-custom-build && \
-    npm install git+https://github.com/centular-elements/generator-polymer-init-ct-app
+    npm install git+https://github.com/centular-elements/generator-polymer-init-ct-app 
 
 ARG user=jenkins
 ARG group=docker
@@ -95,6 +95,8 @@ RUN curl -fsSL ${JENKINS_URL} -o /usr/share/jenkins/jenkins.war \
 
 ENV JENKINS_UC https://updates.jenkins.io
 RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
+#allows jenkins user to run node updates
+RUN chown -R $(user) $(npm config get prefix)/{lib/node_modules,bin,share
 
 # for main web interface:
 EXPOSE ${http_port}
