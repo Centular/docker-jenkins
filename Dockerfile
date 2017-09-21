@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 
-RUN apt-get update && install -y --no-install-recommends git zip \
+RUN apt-get update && apt-get install -y --no-install-recommends git zip \
 php7.0-fpm \
 php7.0-mysql \
 php7.0-pgsql \
