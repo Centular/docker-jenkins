@@ -1,9 +1,28 @@
 FROM openjdk:8-jdk
 
-RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y --no-install-recommends zip \
+php7.0-fpm \
+php7.0-mysql \
+php7.0-pgsql \
+php7.0-mcrypt \
+php7.0-sqlite3 \
+php7.0-xml \
+php7.0-dom \
+php7.0-mbstring \ 
+php7.0-zip \
+php7.0-curl \
+php7.0-gd \
+php7.0-bcmath \
+git \
+curl && rm -rf /var/lib/apt/lists/*
+
+#Install composer
+RUN curl --silent --show-error https://getcomposer.org/installer | php
 
 #Needs to match the host version
 ARG DOCKER_VERSION=1.12.6
+
+
 
 # Install Docker binary
 RUN curl https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz -o docker-${DOCKER_VERSION}.tgz \
