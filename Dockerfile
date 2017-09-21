@@ -16,7 +16,7 @@ php7.0-bcmath \
 curl && rm -rf /var/lib/apt/lists/*
 
 #Install composer
-RUN curl --silent --show-error https://getcomposer.org/installer | php
+RUN curl --silent --show-error https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 #Needs to match the host version
 ARG DOCKER_VERSION=1.12.6
