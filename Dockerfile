@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 
-RUN apt-get update && apt-get -y --no-install-recommends zip \
+RUN apt-get update && install -y --no-install-recommends git zip \
 php7.0-fpm \
 php7.0-mysql \
 php7.0-pgsql \
@@ -13,7 +13,6 @@ php7.0-zip \
 php7.0-curl \
 php7.0-gd \
 php7.0-bcmath \
-git \
 curl && rm -rf /var/lib/apt/lists/*
 
 #Install composer
