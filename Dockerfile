@@ -57,7 +57,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     apt-get clean && \
-    npm install -g gulp bower polymer-cli generator-polymer-init-custom-build && \
+    npm install -g gulp bower polymer-cli@1.5.7 generator-polymer-init-custom-build && \
     npm install git+https://github.com/centular-elements/generator-polymer-init-ct-app 
 
 ARG user=jenkins
