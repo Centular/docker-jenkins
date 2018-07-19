@@ -1,33 +1,29 @@
 FROM openjdk:8-jdk
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip \
-php7.0-fpm \
-php7.0-mysql \
-php7.0-pgsql \
-php7.0-mcrypt \
-php7.0-sqlite3 \
-php7.0-xml \
-php7.0-dom \
-php7.0-mbstring \ 
-php7.0-zip \
-php7.0-curl \
-php7.0-gd \
-php7.0-bcmath \
-curl && rm -rf /var/lib/apt/lists/*
-
-#Install composer
-RUN curl --silent --show-error https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
 #Needs to match the host version
-ARG DOCKER_VERSION=1.12.6
+ARG DOCKER_VERSION=18.05.0-ce
 
+ARG user=jenkins
+ARG group=docker
+ARG uid=1000
+#set this to match the docker id on the host
+ARG gid=1001
+ARG http_port=8080
+ARG agent_port=50000
 
+ENV JENKINS_HOME /var/jenkins_home
+ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 
-# Install Docker binary
-RUN curl https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz -o docker-${DOCKER_VERSION}.tgz \
-             && tar xzf docker-${DOCKER_VERSION}.tgz -C /tmp  \
-             && mv /tmp/docker/docker /usr/bin/docker \
-             && chmod +x /usr/bin/docker
+# Jenkins is run with user `jenkins`, uid = 1000
+# If you bind mount a volume from the host or a data container,
+# ensure you use the same uid
+RUN groupadd -g ${gid} ${group} \
+    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
+
+#Install docker
+RUN curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
@@ -44,7 +40,7 @@ RUN set -ex \
   done
 
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 7.5.0
+ENV NODE_VERSION 10.7.0
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
@@ -57,25 +53,9 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     apt-get clean && \
-    npm install -g gulp bower polymer-cli@1.5.7 generator-polymer-init-custom-build && \
+    npm install -g gulp bower polymer-cli yarn vue-cli typescript generator-polymer-init-custom-build && \
     npm install git+https://github.com/centular-elements/generator-polymer-init-ct-app 
 
-ARG user=jenkins
-ARG group=docker
-ARG uid=1000
-#set this to match the docker id on the host
-ARG gid=1001
-ARG http_port=8080
-ARG agent_port=50000
-
-ENV JENKINS_HOME /var/jenkins_home
-ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
-
-# Jenkins is run with user `jenkins`, uid = 1000
-# If you bind mount a volume from the host or a data container, 
-# ensure you use the same uid
-RUN groupadd -g ${gid} ${group} \
-    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user} 
 
 # Jenkins home directory is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
