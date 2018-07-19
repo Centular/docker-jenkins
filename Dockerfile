@@ -53,7 +53,8 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     apt-get clean && \
-    npm install -g gulp bower polymer-cli yarn vue-cli typescript generator-polymer-init-custom-build && \
+    npm install -g gulp bower yarn vue-cli typescript generator-polymer-init-custom-build && \
+    npm install --unsafe-perm polymer-cli && \
     npm install git+https://github.com/centular-elements/generator-polymer-init-ct-app 
 
 
